@@ -12,7 +12,9 @@ struct Permission: OptionSet {
 
     var binaryRepresentation: String {
         var binary = String(rawValue, radix: 2)
-        while binary.count < 3 { binary = "0" + binary }
+        while binary.count < 3 {
+            binary = "0" + binary
+        }
         return binary
     }
 
