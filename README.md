@@ -17,7 +17,7 @@
 
 ---
 
-This is **SwiftHooks** - a tool and Tuist plugin to install Git hooks that can be distributed alongside a project and shared by all the contributors.
+This is **SwiftHooks** - a CLI tool to install Git hooks that can be distributed alongside a project and shared by all the contributors.
 
 &nbsp;
 
@@ -43,24 +43,6 @@ A command is provided to remove any installed hooks.
 
 ## Install
 
-The primary intention was to use SwiftHooks as a [Tuist](https://github.com/tuist/tuist) plugin, however, it can also be used as a standard CLI tool as well.
-
-### ▶︎ 🖥 As a Tuist Plugin
-
-To set up as a Tuist plugin in your project simply follow the [Tuist plugin install instructions](https://docs.tuist.io/plugins/using-plugins/) using the [latest version](https://github.com/lordcodes/swifthooks/releases/latest).
-
-Add the plugin to `Config.swift`.
-
-```swift
-import ProjectDescription
-
-let config = Config(
-    plugins: [
-        .git(url: "https://github.com/lordcodes/swifthooks.git", tag: "VERSION")
-    ]
-)
-```
-
 ### ▶︎ 🖥 Standalone via Swift Package Manager
 
 SwiftHooks can be easily installed globally using Swift Package Manager.
@@ -75,16 +57,20 @@ This will install swifthooks into `/usr/local/bin`. If you get a permission erro
 
 You can uninstall it again using `make uninstall` which simply deletes it from `/usr/local/bin`.
 
-### ▶︎ 🍺 Homebrew
+### ▶︎ 🍀 Mint
 
-Support for Homebrew may be planned in the future.
+You can install SwiftHooks on MacOS using [Mint](https://github.com/yonaskolb/Mint) as follows:
+
+```terminal
+mint install lordcodes/swifthooks
+```
 
 ### ▶︎ 📦 As a Swift package
 
 To install SwiftHooks for use in your own Swift code, add it is a Swift Package Manager dependency within your `Package.swift` file. For help in doing this, please check out the Swift Package Manager documentation.
 
 ```swift
-.package(url: "https://github.com/lordcodes/swifthooks", exact: "VERSION")
+.package(url: "https://github.com/lordcodes/swifthooks", exact: "0.3.0")
 ```
 
 &nbsp;
@@ -103,22 +89,6 @@ For example:
 ```
 
 Ensure the scripts are executable with `chmod a+x .git-hooks/commit-msg/prepend-jira-issue-id.sh`.
-
-### 🖥 Via the Tuist Plugin
-
-Ensure you have fetched with `tuist fetch` and you will then be able to run the plugin's tasks.
-
-```terminal
-USAGE: tuist hooks <install|uninstall|version> [-q|--quiet]
-
-ARGUMENTS:
-  <install>               Installs Git hooks that run's hooks stored in project.
-  <uninstall>             Uninstalls Git hooks that were installed.
-  <version>               Prints out the current version of the tool.
-
-OPTIONS:
-  -q, --quiet             Silence any output except errors 
-```
 
 ### 🖥 Via the Standalone CLI
 
