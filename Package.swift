@@ -6,7 +6,6 @@ let package = Package(
     name: "swifthooks",
     platforms: [.macOS(.v11)],
     products: [
-        .executable(name: "tuist-hooks", targets: ["SwiftHooksCLI"]),
         .executable(name: "swifthooks", targets: ["SwiftHooksCLI"]),
         .library(name: "SwiftHooksKit", targets: ["SwiftHooksKit"]),
     ],
