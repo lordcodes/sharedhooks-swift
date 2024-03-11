@@ -43,8 +43,8 @@ jobs:
     - name: Update version
       run: |
         sed -i -e "s/current = \".*\"/current = \"${{ steps.semvers.outputs.version }}\"/g" Sources/SwiftHooksKit/Version/Version.swift
-        sed -i '' "s/swifthooks = \".*\"/swifthooks = "${{ steps.semvers.outputs.version }}"/g" README.md
-        sed -i '' "s/.package(url: \"https:\/\/github\.com\/lordcodes\/swifthooks\", exact: \".*\")/.package(url: \"https:\/\/github\.com\/lordcodes\/swifthooks\", exact: \"${{ steps.semvers.outputs.version }}\")/g" README.md
+        sed -i -e "s/swifthooks = \".*\"/swifthooks = "${{ steps.semvers.outputs.version }}"/g" README.md
+        sed -i -e "s/.package(url: \"https:\/\/github\.com\/lordcodes\/swifthooks\", exact: \".*\")/.package(url: \"https:\/\/github\.com\/lordcodes\/swifthooks\", exact: \"${{ steps.semvers.outputs.version }}\")/g" README.md
 
     - name: Build changelog
       id: changelog
