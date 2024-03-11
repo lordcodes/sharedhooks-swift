@@ -70,7 +70,7 @@ mint install lordcodes/swifthooks
 To install SwiftHooks for use in your own Swift code, add it is a Swift Package Manager dependency within your `Package.swift` file. For help in doing this, please check out the Swift Package Manager documentation.
 
 ```swift
-.package(url: "https://github.com/lordcodes/swifthooks", exact: "0.3.0")
+.package(url: "https://github.com/lordcodes/swifthooks", exact: "0.4.0")
 ```
 
 &nbsp;
