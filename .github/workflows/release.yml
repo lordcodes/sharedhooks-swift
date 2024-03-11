@@ -20,7 +20,7 @@ jobs:
       changelog: ${{ steps.changelog.outputs.changelog }}
       commit_hash: ${{ steps.auto_commit.outputs.commit_hash }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
@@ -37,7 +37,7 @@ jobs:
         version: ${{ steps.previous_tag.outputs.tag }}
 
     - name: Set version
-      run: echo '::set-output name=version::${{ steps.calculated_semvers.outputs.minor }}${{ github.event.inputs.version }}'
+      run: echo "version=${{ steps.calculated_semvers.outputs.minor }}" >> $GITHUB_OUTPUT
       id: semvers
 
     - name: Update version
@@ -46,7 +46,7 @@ jobs:
 
     - name: Build changelog
       id: changelog
-      uses: mikepenz/release-changelog-builder-action@v3
+      uses: mikepenz/release-changelog-builder-action@v4
       with:
         configuration: ".github/changelog-configuration.json"
         toTag: "main"
@@ -61,7 +61,7 @@ jobs:
 
     - name: Commit
       id: auto_commit
-      uses: stefanzweifel/git-auto-commit-action@v4
+      uses: stefanzweifel/git-auto-commit-action@v5
       if: ${{ github.event.inputs.publish == 'true' }}
       with:
         commit_message: "[Release] Swift Hooks ${{ steps.semvers.outputs.version }}"
@@ -70,33 +70,40 @@ jobs:
     runs-on: macos-latest
     needs: prepare-release
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       if: ${{ github.event.inputs.publish == 'true' }}
       with:
         ref: ${{ needs.prepare-release.outputs.commit_hash }}
 
-    - name: Install Tuist
+    - name: Build and package release
+      id: build
       if: ${{ github.event.inputs.publish == 'true' }}
       run: |
-        bash <(curl -Ls https://install.tuist.io)
-
-    - name: Tuist archive
-      if: ${{ github.event.inputs.publish == 'true' }}
-      run: |
-        tuist plugin archive
+        ./Scripts/package-release.sh
         
     - name: Create GitHub Release
       if: ${{ github.event.inputs.publish == 'true' }}
       uses: softprops/action-gh-release@v1
       with:
         token: "${{ secrets.GITHUB_TOKEN }}"
-        files: swifthooks.tuist-plugin.zip
+        files: |
+            ${{ steps.build.outputs.FILENAME }}
+            ${{ steps.build.outputs.ARTIFACT_BUNDLE_FILENAME }}
         name: ${{ needs.prepare-release.outputs.version }}
         tag_name: v${{ needs.prepare-release.outputs.version }}
         body: ${{ needs.prepare-release.outputs.changelog }}
         target_commitish: ${{ needs.prepare-release.outputs.commit_hash }}
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload binary
+      uses: actions/upload-artifact@v3
       with:
-        name: swifthooks.tuist-plugin.zip
-        path: swifthooks.tuist-plugin.zip
+        name: ${{ steps.build.outputs.FILENAME }}
+        path: "${{ steps.build.outputs.FILENAME }}"
+        retention-days: 5
+
+    - name: Upload SPM artifact bundle
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.build.outputs.ARTIFACT_BUNDLE_FILENAME }}
+        path: "${{ steps.build.outputs.ARTIFACT_BUNDLE_FILENAME }}"
+        retention-days: 5
