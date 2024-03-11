@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2024-03-11
+
+### Changed
+
+- Focus on being a CLI and support for use from an SPM plugin instead of Tuist plugin [#18](https://github.com/lordcodes/swifthooks/pull/18) by [@lordcodes](https://github.com/lordcodes)
+
 ## 0.3.0 - 2022-07-15
 
 ### Added
