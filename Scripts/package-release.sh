@@ -24,7 +24,7 @@ sed 's/__VERSION__/'"${VERSION}"'/g' $INFO_TEMPLATE > "${ARTIFACT_BUNDLE}/info.j
 # Build multi-arch binary
 swift build --disable-sandbox -c release --arch arm64
 swift build --disable-sandbox -c release --arch x86_64
-lipo -create -output $OUTPUT_BINARY .build/arm64-apple-macosx/release/cloakswift .build/x86_64-apple-macosx/release/swifthooks
+lipo -create -output $OUTPUT_BINARY .build/arm64-apple-macosx/release/swifthooks .build/x86_64-apple-macosx/release/swifthooks
 strip -rSTX ${OUTPUT_BINARY}
 
 # Copy macOS binary into bundle
